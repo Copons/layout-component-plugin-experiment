@@ -1,23 +1,29 @@
 {
-  "name": "layout-component-plugin-experiment",
-  "version": "0.1.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {},
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Copons/layout-component-plugin-experiment.git"
-  },
-  "author": "",
-  "license": "GPL-2.0-or-later",
-  "bugs": {
-    "url": "https://github.com/Copons/layout-component-plugin-experiment/issues"
-  },
-  "homepage": "https://github.com/Copons/layout-component-plugin-experiment",
-  "devDependencies": {
-    "@babel/core": "^7.4.3",
-    "@wordpress/babel-preset-default": "^4.1.0",
-    "parcel-bundler": "^1.12.3",
-    "prettier": "^1.16.4"
-  }
+	"name": "layout-component-plugin-experiment",
+	"version": "0.1.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"start": "parcel watch index.js",
+		"build": "parcel build index.js --no-source-maps"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Copons/layout-component-plugin-experiment.git"
+	},
+	"author": "Copons",
+	"license": "GPL-2.0-or-later",
+	"bugs": {
+		"url": "https://github.com/Copons/layout-component-plugin-experiment/issues"
+	},
+	"homepage": "https://github.com/Copons/layout-component-plugin-experiment",
+	"devDependencies": {
+		"@babel/core": "^7.4.3",
+		"@wordpress/babel-preset-default": "^4.1.0",
+		"parcel-bundler": "^1.12.3",
+		"prettier": "^1.16.4"
+	},
+	"dependencies": {
+		"@wordpress/element": "^2.3.0"
+	}
 }
