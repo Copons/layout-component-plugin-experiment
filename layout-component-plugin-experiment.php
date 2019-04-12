@@ -4,8 +4,13 @@
  */
 
 class Copons_Layout_Component_Experiment {
+
 	function __construct() {
 		add_action( 'init', [ $this, 'register_blocks' ], 100 );
+
+		add_filter( 'default_content', [ $this, 'add_layout_components' ] );
+		//add_filter( 'edit_post_content_filtered', [ $this, 'add_layout_components' ], 10, 2 );
+		add_filter( 'content_save_pre', [ $this, 'remove_layout_components' ] );
 	}
 
 	function register_blocks() {
@@ -32,6 +37,15 @@ class Copons_Layout_Component_Experiment {
 			</header>
 		<?php
 		return ob_get_clean();
+	}
+
+	function add_layout_components( $content ) {
+		return '<!-- wp:copons/layout-component /-->';
+	}
+
+	function remove_layout_components( $content ) {
+		error_log( $content );
+		return str_replace( '<!-- wp:copons/layout-component /-->', '', $content );
 	}
 }
 
