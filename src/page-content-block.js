@@ -44,9 +44,16 @@ const edit = compose(
 });
 
 registerBlockType('copons/page-content-block', {
-	title: 'Page Content',
+	title: 'Page Content Preview',
 	icon: 'layout',
 	category: 'layout',
+	supports: {
+		align: ['wide', 'full'],
+		anchor: true,
+		html: false,
+		multiple: false,
+		reusable: false,
+	},
 	edit,
 	save: () => null,
 });
