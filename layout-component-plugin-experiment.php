@@ -17,7 +17,14 @@ class Copons_Layout_Component_Experiment {
 		wp_register_script(
 			'copons-blocks',
 			plugins_url( 'dist/index.js', __FILE__ ),
-			array( 'wp-blocks', 'wp-components', 'wp-compose', 'wp-data', 'wp-element' ),
+			array(
+				'wp-block-editor',
+				'wp-blocks',
+				'wp-components',
+				'wp-compose',
+				'wp-data',
+				'wp-element',
+			),
 			filemtime( plugin_dir_path( __FILE__ ) . 'dist/index.js' )
 		);
 

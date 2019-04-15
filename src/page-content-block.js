@@ -1,8 +1,11 @@
+import classNames from 'classnames';
 import { find, get, map } from 'lodash';
+const { BlockControls } = wp.blockEditor;
 const { registerBlockType } = wp.blocks;
-const { SelectControl } = wp.components;
+const { IconButton, Placeholder, SelectControl, Toolbar } = wp.components;
 const { compose, withState } = wp.compose;
 const { withSelect } = wp.data;
+const { Fragment } = wp.element;
 
 import './page-content-block.scss';
 
@@ -13,9 +16,12 @@ const edit = compose(
 		}),
 	})),
 	withState({
+		isEditing: true,
 		selectedPageId: undefined,
 	})
-)(({ attributes, pages, selectedPageId, setState }) => {
+)(({ attributes, isEditing, pages, selectedPageId, setState }) => {
+	const { align } = attributes;
+
 	const selectOptions = [
 		{ label: '', value: undefined },
 		...map(pages, page => ({
@@ -24,28 +30,66 @@ const edit = compose(
 		})),
 	];
 
-	const onChange = pageId => setState({ selectedPageId: parseInt(pageId, 10) });
+	const toggleEditing = () => setState({ isEditing: !isEditing });
+
+	const onChange = pageId =>
+		setState({
+			isEditing: false,
+			selectedPageId: parseInt(pageId, 10),
+		});
 
 	const selectedPage = find(pages, { id: selectedPageId });
 
-	const className = `copons-page-content-block${
-		attributes.align ? ` align${attributes.align}` : ''
-	}`;
-
 	return (
-		<div className={className}>
-			<SelectControl
-				label="Select a page to preview:"
-				onChange={onChange}
-				options={selectOptions}
-			/>
+		<Fragment>
+			{selectedPageId && (
+				<BlockControls>
+					<Toolbar>
+						<IconButton
+							className={classNames(
+								'components-icon-button components-toolbar__control',
+								{ 'is-active': isEditing }
+							)}
+							label="Change Preview"
+							onClick={toggleEditing}
+							icon="edit"
+						/>
+					</Toolbar>
+				</BlockControls>
+			)}
 			<div
-				className="copons-page-content-block__selected-page"
-				dangerouslySetInnerHTML={{
-					__html: get(selectedPage, 'content.rendered'),
-				}}
-			/>
-		</div>
+				className={classNames('copons-page-content-block', {
+					[`align${align}`]: align,
+				})}
+			>
+				{isEditing && (
+					<Placeholder
+						icon="layout"
+						label="Page Content"
+						instructions="Select a page to preview"
+					>
+						<div className="copons-page-content-block__selector">
+							<SelectControl
+								onChange={onChange}
+								options={selectOptions}
+								value={selectedPageId}
+							/>
+							{selectedPageId && (
+								<a href={`?post=${selectedPageId}&action=edit`}>Edit Page</a>
+							)}
+						</div>
+					</Placeholder>
+				)}
+				{!isEditing && (
+					<div
+						className="copons-page-content-block__preview"
+						dangerouslySetInnerHTML={{
+							__html: get(selectedPage, 'content.rendered'),
+						}}
+					/>
+				)}
+			</div>
+		</Fragment>
 	);
 });
 
