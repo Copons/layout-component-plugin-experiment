@@ -16,11 +16,10 @@ const edit = compose(
 		}),
 	})),
 	withState({
-		isEditing: true,
-		selectedPageId: undefined,
+		isEditing: false,
 	})
-)(({ attributes, isEditing, pages, selectedPageId, setState }) => {
-	const { align } = attributes;
+)(({ attributes, isEditing, pages, setAttributes, setState }) => {
+	const { align, selectedPageId } = attributes;
 
 	const selectOptions = [
 		{ label: '', value: undefined },
@@ -32,17 +31,22 @@ const edit = compose(
 
 	const toggleEditing = () => setState({ isEditing: !isEditing });
 
-	const onChange = pageId =>
-		setState({
-			isEditing: false,
-			selectedPageId: parseInt(pageId, 10),
-		});
+	const onChange = pageId => {
+		if (!!pageId) {
+			setState({ isEditing: false });
+		}
+		setAttributes({ selectedPageId: parseInt(pageId, 10) });
+	};
 
 	const selectedPage = find(pages, { id: selectedPageId });
 
+	const showToggleButton = !isEditing || !!selectedPageId;
+	const showPlaceholder = isEditing || !selectedPageId;
+	const showPreview = !isEditing && !!selectedPageId;
+
 	return (
 		<Fragment>
-			{selectedPageId && (
+			{showToggleButton && (
 				<BlockControls>
 					<Toolbar>
 						<IconButton
@@ -62,7 +66,7 @@ const edit = compose(
 					[`align${align}`]: align,
 				})}
 			>
-				{isEditing && (
+				{showPlaceholder && (
 					<Placeholder
 						icon="layout"
 						label="Page Content"
@@ -74,13 +78,13 @@ const edit = compose(
 								options={selectOptions}
 								value={selectedPageId}
 							/>
-							{selectedPageId && (
+							{!!selectedPageId && (
 								<a href={`?post=${selectedPageId}&action=edit`}>Edit Page</a>
 							)}
 						</div>
 					</Placeholder>
 				)}
-				{!isEditing && (
+				{showPreview && (
 					<div
 						className="copons-page-content-block__preview"
 						dangerouslySetInnerHTML={{
@@ -97,6 +101,9 @@ registerBlockType('copons/page-content-block', {
 	title: 'Page Content Preview',
 	icon: 'layout',
 	category: 'layout',
+	attributes: {
+		selectedPageId: { type: 'number' },
+	},
 	supports: {
 		align: ['wide', 'full'],
 		anchor: true,
