@@ -15,14 +15,19 @@ class Copons_Layout_Component_Experiment {
 
 	function register_blocks() {
 		wp_register_script(
-			'copons-layout-component',
+			'copons-blocks',
 			plugins_url( 'dist/index.js', __FILE__ ),
-			array( 'wp-blocks', 'wp-data', 'wp-element' )
+			array( 'wp-blocks', 'wp-components', 'wp-compose', 'wp-data', 'wp-element' )
 		);
 
 		register_block_type( 'copons/layout-component', [
-			'editor_script' => 'copons-layout-component',
+			'editor_script' => 'copons-blocks',
 			'render_callback' => [ $this, 'render_layout_component' ],
+		] );
+
+		register_block_type( 'copons/page-content', [
+			'editor_script' => 'copons-blocks',
+			'render_callback' => [ $this, 'render_page_content_block' ],
 		] );
 	}
 
@@ -46,6 +51,17 @@ class Copons_Layout_Component_Experiment {
 	function remove_layout_components( $content ) {
 		error_log( $content );
 		return str_replace( '<!-- wp:copons/layout-component /-->', '', $content );
+	}
+
+	function render_page_content_block( $attributes ) {
+		if ( ! $attributes[ 'pageId' ] ) {
+			return '';
+		}
+		$post = get_post( $attributes[ 'pageId' ] );
+		setup_postdata( $post );
+		$the_content = get_the_content();
+		wp_reset_postdata();
+		return $the_content;
 	}
 }
 
