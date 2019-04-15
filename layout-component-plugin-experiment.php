@@ -28,10 +28,10 @@ class Copons_Layout_Component_Experiment {
 			filemtime( plugin_dir_path( __FILE__ ) . 'dist/index.css' )
 		);
 
-		register_block_type( 'copons/layout-component', [
+		/*register_block_type( 'copons/layout-component', [
 			'editor_script' => 'copons-blocks',
 			'render_callback' => [ $this, 'render_layout_component' ],
-		] );
+		] );*/
 
 		register_block_type( 'copons/page-content', [
 			'editor_script' => 'copons-blocks',
