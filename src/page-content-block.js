@@ -4,6 +4,8 @@ const { SelectControl } = wp.components;
 const { compose, withState } = wp.compose;
 const { withSelect } = wp.data;
 
+import './page-content-block.scss';
+
 const edit = compose(
 	withSelect(select => ({
 		pages: select('core').getEntityRecords('postType', 'page', {
@@ -13,7 +15,7 @@ const edit = compose(
 	withState({
 		selectedPageId: undefined,
 	})
-)(({ pages, selectedPageId, setState }) => {
+)(({ attributes, pages, selectedPageId, setState }) => {
 	const selectOptions = [
 		{ label: '', value: undefined },
 		...map(pages, page => ({
@@ -26,8 +28,12 @@ const edit = compose(
 
 	const selectedPage = find(pages, { id: selectedPageId });
 
+	const className = `copons-page-content-block${
+		attributes.align ? ` align${attributes.align}` : ''
+	}`;
+
 	return (
-		<div className="copons-page-content-block">
+		<div className={className}>
 			<SelectControl
 				label="Select a page to preview:"
 				onChange={onChange}

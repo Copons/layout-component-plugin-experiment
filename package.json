@@ -22,6 +22,10 @@
 		"@wordpress/babel-preset-default": "^4.1.0",
 		"lodash": "^4.17.11",
 		"parcel-bundler": "^1.12.3",
-		"prettier": "^1.16.4"
+		"prettier": "^1.16.4",
+		"sass": "^1.18.0"
+	},
+	"dependencies": {
+		"@wordpress/element": "^2.3.0"
 	}
 }

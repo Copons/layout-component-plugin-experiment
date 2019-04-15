@@ -17,7 +17,15 @@ class Copons_Layout_Component_Experiment {
 		wp_register_script(
 			'copons-blocks',
 			plugins_url( 'dist/index.js', __FILE__ ),
-			array( 'wp-blocks', 'wp-components', 'wp-compose', 'wp-data', 'wp-element' )
+			array( 'wp-blocks', 'wp-components', 'wp-compose', 'wp-data', 'wp-element' ),
+			filemtime( plugin_dir_path( __FILE__ ) . 'dist/index.js' )
+		);
+
+		wp_register_style(
+			'copons-blocks-styles',
+			plugins_url( 'dist/index.css', __FILE__ ),
+			array( 'wp-edit-blocks' ),
+			filemtime( plugin_dir_path( __FILE__ ) . 'dist/index.css' )
 		);
 
 		register_block_type( 'copons/layout-component', [
@@ -27,6 +35,7 @@ class Copons_Layout_Component_Experiment {
 
 		register_block_type( 'copons/page-content', [
 			'editor_script' => 'copons-blocks',
+			'editor_style' => 'copons-blocks-styles',
 			'render_callback' => [ $this, 'render_page_content_block' ],
 		] );
 	}

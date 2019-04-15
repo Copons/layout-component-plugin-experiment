@@ -1,0 +1,13 @@
+.copons-page-content-block {
+	&.alignfull {
+		padding: 0 8px;
+	}
+	.components-base-control__field {
+		display: flex;
+		align-items: center;
+	}
+	.components-base-control__label {
+		flex-shrink: 0;
+		padding-right: 8px;
+	}
+}
